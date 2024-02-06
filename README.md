@@ -19,20 +19,21 @@ This project focuses on developing a Shiny web app using R for in-depth job sala
 
 #### Statistics Summary
 ![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/summary.png)
+
 #### Handling Missing Values
-![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/missingvalues.png)
+<img src="https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/missingvalues.png" width="300" alt="alt text">
+
 #### Handling Duplicates
-![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/duplicates.png)
+<img src="https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/duplicates.png" width="300" alt="alt text">
+
 #### Feature Engineering
 ![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/jobtitles.png)
+
 ### 2. Develop the R Shiny Interactive Web App
 The Web App is designed to generate 4 types of graphs: scatter plot, box plot, bar graph and histogram with 6 different parameters and 9 variables.
 
 
-<img src="https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/variables.png" width="300" alt="alt text">
-
-
-<img src="https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/parameters.png" width="300" alt="alt text">
+<img src="https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/variables.png" width="300" alt="alt text"> <img src="https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/parameters.png" width="300" alt="alt text">
 
 
 ![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/app.png)
@@ -43,12 +44,18 @@ The Web App is designed to generate 4 types of graphs: scatter plot, box plot, b
 Feel free to try out the [Shiny Interactive Web App](http://127.0.0.1:3408/) for Job Salary Analysis.
 
 Here are some snippets of the generated graphs 📊
+
+#### Salary vs Years of Experience by Gender
 ![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/pic1.png)
 
+#### Salary Distribution for Different Genders in Different Countries
 ![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/pic2.png)
 
+#### Educational Levels in Different Countries
 ![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/pic3.png)
 
+#### Years of Experience Distribution by Job Title
 ![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/pic4.png)
 
+#### Salary Distribution for Different Job Titles by Gender
 ![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/pic5.png)
