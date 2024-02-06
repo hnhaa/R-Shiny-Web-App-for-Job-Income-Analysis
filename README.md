@@ -21,13 +21,13 @@ This project focuses on developing a Shiny web app using R for in-depth job sala
 ![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/summary.png)
 
 #### Handling Missing Values
-<img src="https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/missingvalues.png" width="300" alt="alt text">
+![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/missingvalues.png)
 
 #### Handling Duplicates
 <img src="https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/duplicates.png" width="300" alt="alt text">
 
 #### Feature Engineering
-![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/jobtitles.png)
+<img src="https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/jobtitles.png" width="300" alt="alt text">
 
 ### 2. Develop the R Shiny Interactive Web App
 The Web App is designed to generate 4 types of graphs: scatter plot, box plot, bar graph and histogram with 6 different parameters and 9 variables.
@@ -35,7 +35,7 @@ The Web App is designed to generate 4 types of graphs: scatter plot, box plot, b
 
 <img src="https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/variables.png" width="300" alt="alt text"> <img src="https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/parameters.png" width="300" alt="alt text">
 
-
+#### Snippets of the App
 ![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/app.png)
 
 ![alt text](https://github.com/hnhaa/R-Shiny-Web-App-for-Job-Income-Analysis/blob/main/Images/app2.png)
