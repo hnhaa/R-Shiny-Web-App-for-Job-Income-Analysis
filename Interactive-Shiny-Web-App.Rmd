@@ -1,0 +1,320 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Load the dataset
+```{r}
+df <- read.csv('/Users/nhatha/Downloads/Salary.csv')
+df
+```
+Explore dataset
+```{r}
+#Dimension of the dataset
+dim(df)
+
+# Display the structure of the dataset
+str(df)
+```
+Change data types
+```{r}
+df$Education.Level <- as.character(df$Education.Level)
+df$Senior <- as.character(df$Senior)
+```
+
+Handle Duplicates
+```{r}
+# Check for duplicate rows
+duplicated_rows <- df[duplicated(df), ]
+
+# Print the duplicate rows (optional)
+print("Duplicate Rows:")
+print(duplicated_rows)
+
+# Delete duplicate rows from the original data frame
+df <- df[!duplicated(df), ]
+
+# Print the modified data frame
+print("Data Frame after Removing Duplicates:")
+print(df)
+
+```
+
+Summary Statistics 
+```{r}
+summary(df)
+```
+Value Counts for Categorical Attributes
+```{r}
+library(dplyr)
+
+# Select columns that are of character data type
+character_columns <- df %>% select_if(is.character)
+
+# Create an empty data frame to store the results
+value_counts_table <- data.frame()
+
+# Loop through selected columns and get value counts
+for (col in colnames(character_columns)) {
+  value_counts <- table(character_columns[[col]])
+  value_counts_df <- data.frame(Category = names(value_counts), Count = as.vector(value_counts), RowName = col)
+  value_counts_table <- rbind(value_counts_table, value_counts_df)
+}
+
+# Display the combined table
+print(value_counts_table)
+```
+
+Handle Missing Values
+```{r}
+# Check for missing values in each column
+col_missing <- colSums(is.na(df))
+col_missing
+```
+
+Column Names
+```{r}
+names(df)
+```
+
+Feature Engineering: Job Title
+```{r}
+job_title_counts <- table(df$Job.Title)
+
+# Calculate percentages
+job_title_percentages <- prop.table(job_title_counts) * 100
+
+# Create a data frame
+job_title_table <- data.frame(Job_Title = names(job_title_counts), Count = as.numeric(job_title_counts), Percentage = as.numeric(job_title_percentages))
+job_title_table
+```
+Group Job Title
+```{r}
+library(dplyr)
+
+# Assuming your data frame is named df
+df <- df %>%
+  mutate(Job.Title = case_when(
+    grepl("Engineer", Job.Title, ignore.case = TRUE) ~ "Engineering",
+    grepl("Manager", Job.Title, ignore.case = TRUE) ~ "Management",
+    grepl("Analyst", Job.Title, ignore.case = TRUE) ~ "Analyst",
+    grepl("Coordinator", Job.Title, ignore.case = TRUE) ~ "Coordinator",
+    grepl("Director", Job.Title, ignore.case = TRUE) ~ "Director",
+    grepl("HR", Job.Title, ignore.case = TRUE) ~ "Human Resources",
+    grepl("Marketing", Job.Title, ignore.case = TRUE) ~ "Marketing",
+    grepl("Sales", Job.Title, ignore.case = TRUE) ~ "Sales",
+    grepl("Scientist", Job.Title, ignore.case = TRUE) ~ "Scientist",
+    grepl("Developer", Job.Title, ignore.case = TRUE) ~ "Developer",
+    TRUE ~ "Other"
+  )) %>%
+
+# Print the grouped data
+print(df)
+
+```
+
+Job Title Percentages after Grouping
+```{r}
+# Assuming your data frame is named df
+job_title_counts <- table(df$Job.Title)
+
+# Calculate percentages
+job_title_percentages <- prop.table(job_title_counts) * 100
+
+# Create a data frame
+job_title_table <- data.frame(Job_Title = names(job_title_counts), Count = as.numeric(job_title_counts), Percentage = as.numeric(job_title_percentages))
+
+# Order the table by Percentage in descending order
+job_title_table <- job_title_table[order(job_title_table$Percentage, decreasing = TRUE), ]
+
+# Print the ordered table
+print(job_title_table)
+
+
+```
+
+Interactive visualisation
+```{r}
+#Installing packages like ggplot2, shiny and shiny themes.
+
+install.packages("ggplot2")
+install.packages("shiny")
+install.packages("shinythemes")
+
+library(shiny)
+library(shinythemes)
+library(ggplot2)
+```
+
+```{r}
+# Define UI
+ui <- fluidPage(
+  headerPanel("Job Salary Data Visualisation"),
+  
+  pageWithSidebar(
+    # Add header panel with the name of the application
+    headerPanel("Job Salary Dataset Analysis"),
+    
+    sidebarPanel(
+      h4('The variables are as follows:'),
+      h6('1. Age: Age of the individual'),
+      h6('2. Gender: Gender of the individual'),
+      h6('3. Education Level: Level of education (numeric)'),
+      h6('4. Job Title: Title of the job'),
+      h6('5. Years of Experience: Years of work experience'),
+      h6('6. Salary: Annual salary in monetary units'),
+      h6('7. Country: Country of residence'),
+      h6('8. Race: Ethnicity or race of the individual'),
+      h6('9. Senior: Seniority level in the job (binary: 0 or 1)'),
+      br(),
+
+      h4('Select different parameters for Scatter Plot:'),
+      sliderInput('sampleSize1', 'Sample Size', min = 1, max = nrow(df), value = min(1000, nrow(df)), step = 10, round = 0),
+      selectInput('x1', 'X Axis Measure', names(df)),
+      selectInput('y1', 'Y Axis Measure', names(df), names(df)[[2]]),
+      selectInput('color1', 'Measure Color', c('None', names(df))),
+      selectInput('facet_row1', 'Facet Row', c(None='.', names(df))),
+      selectInput('facet_col1', 'Facet Column', c(None='.', names(df))),
+      br(),
+      
+      h4('Select different parameters for Box Plot:'),
+      sliderInput('sampleSize2', 'Sample Size', min = 1, max = nrow(df), value = min(1000, nrow(df)), step = 10, round = 0),
+      selectInput('x2', 'X Axis Measure', names(df)),
+      selectInput('y2', 'Y Axis Measure', names(df), names(df)[[2]]),
+      selectInput('color2', 'Measure Color', c('None', names(df))),
+      selectInput('facet_row2', 'Facet Row', c(None='.', names(df))),
+      selectInput('facet_col2', 'Facet Column', c(None='.', names(df))),
+      br(),
+      
+      h4('Select different parameters for Bar Graph:'),
+      sliderInput('sampleSize3', 'Sample Size', min = 1, max = nrow(df), value = min(1000, nrow(df)), step = 10, round = 0),
+      selectInput('x3', 'X Axis Measure', names(df)),
+      selectInput('color3', 'Measure Color', c('None', names(df))),
+      selectInput('facet_row3', 'Facet Row', c(None='.', names(df))),
+      selectInput('facet_col3', 'Facet Column', c(None='.', names(df))),
+      br(),
+      
+      h4('Select different parameters for Histogram Plot:'),
+      sliderInput('sampleSize4', 'Sample Size', min = 1, max = nrow(df), value = min(1000, nrow(df)), step = 10, round = 0),
+      selectInput('x4', 'X Axis Measure', names(df),names(df)[[6]]),
+      selectInput('color4', 'Measure Color', c('None', names(df))),
+      selectInput('facet_row4', 'Facet Row', c(None='.', names(df))),
+      selectInput('facet_col4', 'Facet Column', c(None='.', names(df))),
+      br()
+    ),
+    
+    mainPanel(
+      h4('Introduction & How to use'),
+      p('Explore the Heart Disease dataset interactively with this Shiny app, uncovering insights into its attributes and relationships.'),
+      
+      textInput('caption1', 'Plot Caption', value = 'Scatter Plot on Job Salary Dataset'),
+      plotOutput('plot1', height = 400),
+      br(),
+      
+      textInput('caption2', 'Plot Caption', value = 'BoxPlot on Job Salary Dataset'),
+      plotOutput('plot2', height = 400),
+      br(),
+      
+      textInput('caption3', 'Plot Caption', value = 'Bar Graph on Job Salary Dataset'),
+      plotOutput('plot3', height = 400),
+      br(),
+      
+      textInput('caption4', 'Plot Caption', value = 'Histogram Plot on Job Salary Dataset'),
+      plotOutput('plot4', height = 400)
+    )
+  )
+)
+
+
+# Define server logic
+server <- function(input, output) {
+  dataset1 <- reactive({
+    df[sample(nrow(df), input$sampleSize1), ]
+  })
+
+  dataset2 <- reactive({
+    df[sample(nrow(df), input$sampleSize2), ]
+  })
+  
+  dataset3 <- reactive({
+    df[sample(nrow(df), input$sampleSize3), ]
+  })
+  
+  dataset4 <- reactive({
+    df[sample(nrow(df), input$sampleSize4), ]
+  })
+  
+  output$plot1 <- renderPlot({
+    p1 <- ggplot(dataset1(), aes_string(x = input$x1, y = input$y1)) + 
+      geom_point()
+    
+    if (input$color1 != 'None') {
+      p1 <- p1 + aes_string(color = input$color1, fill = input$color1)
+      p1 <- p1 + scale_color_manual(values = c("#F2C6DE", "#C6DEF1", "#FAEDCB", "#C9E4DE","#DBCDF0","#F7D9C4","#FFADAD","#F1F7B5","#A0C3D2","#FADDE1","#C7DCA7"))
+      p1 <- p1 + scale_fill_manual(values = c("#F2C6DE", "#C6DEF1", "#FAEDCB", "#C9E4DE","#DBCDF0","#F7D9C4","#FFADAD","#F1F7B5","#A0C3D2","#FADDE1","#C7DCA7"))
+    }
+    
+    facets <- paste(input$facet_row1, '~', input$facet_col1)
+    if (facets != '. ~ .')
+      p1 <- p1 + facet_grid(facets)
+    
+    p1 <- p1 + ggtitle(input$caption1)
+    
+    print(p1)
+  }, height = 400)
+  
+  output$plot2 <- renderPlot({
+    p2 <- ggplot(dataset2(), aes_string(x = input$x2, y = input$y2)) + 
+      geom_boxplot() 
+    
+    if (input$color2 != 'None') {
+      p2 <- p2 + aes_string(fill = input$color2)
+      p2 <- p2 + scale_fill_manual(values = c("#F2C6DE", "#C6DEF1", "#FAEDCB", "#C9E4DE","#DBCDF0","#F7D9C4","#FFADAD","#F1F7B5","#A0C3D2","#FADDE1","#C7DCA7"))
+    }
+    
+    facets2 <- paste(input$facet_row2, '~', input$facet_col2)
+    if (facets2 != '. ~ .')
+      p2 <- p2 + facet_grid(facets2)
+    
+    p2 <- p2 + ggtitle(input$caption2)
+    
+    print(p2)
+  }, height = 400)
+  
+  output$plot3 <- renderPlot({
+    p3 <- ggplot(dataset3(), aes_string(x = input$x3)) + 
+      geom_bar() + ggtitle(input$caption3) +
+      ylab("Count") +
+      theme_minimal()  # Add theme_minimal() for a cleaner look
+    
+    if (input$color3 != 'None') {
+      p3 <- p3 + aes_string(fill = input$color3)
+      p3 <- p3 + scale_fill_manual(values = c("#F2C6DE", "#C6DEF1", "#FAEDCB", "#C9E4DE","#DBCDF0","#F7D9C4","#FFADAD","#F1F7B5","#A0C3D2","#FADDE1","#C7DCA7"))
+    }
+
+    print(p3)
+  }, height = 400)
+
+  output$plot4 <- renderPlot({
+    p4 <- ggplot(dataset4(), aes_string(x = input$x4)) + 
+      geom_histogram(aes(y = ..density..), binwidth = 1) + #Change binwidth to '5000' when plotting 'Salary'
+      geom_density(size = 0.5) + ggtitle(input$caption4) + xlab(input$x4) + ylab('Value')
+    
+    if (input$color4 != 'None')
+      p4 <- p4 + aes_string(fill = input$color4)
+    
+    facets4 <- paste(input$facet_row4, '~', input$facet_col4)
+    if (facets4 != '. ~ .')
+      p4 <- p4 + facet_grid(facets4)
+      p4 <- p4 + scale_fill_manual(values = c("#F2C6DE", "#C6DEF1", "#FAEDCB", "#C9E4DE","#DBCDF0","#F7D9C4","#FFADAD","#F1F7B5","#A0C3D2","#FADDE1","#C7DCA7"))
+    
+    print(p4)
+  }, height = 400)
+  
+}
+
+  
+
+# Run the Shiny app
+shinyApp(ui = ui, server = server)
+```
